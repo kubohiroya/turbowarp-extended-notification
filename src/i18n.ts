@@ -1,6 +1,6 @@
 export const translate = (text: string): string => Scratch.translate(text);
 
-export const keyMenuItems = [
+export const createKeyMenuItems = () => [
   {text: translate('space'), value: 'space'},
   {text: translate('up arrow'), value: 'arrowup'},
   {text: translate('down arrow'), value: 'arrowdown'},
