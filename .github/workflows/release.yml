@@ -1,0 +1,29 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install
+      - run: npm run check
+      - name: Create ZIP archive
+        run: |
+          cd dist
+          zip ../extended-notification.zip extended-notification.js
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            dist/extended-notification.js
+            extended-notification.zip
