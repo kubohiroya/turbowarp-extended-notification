@@ -8,11 +8,61 @@ The extension provides a small, reusable synchronization mechanism for TurboWarp
 
 ## Blocks
 
-- `[MESSAGE] を拡張通知する`
-- `[MESSAGE] 拡張通知を受け取るまで待つ`
-- `<[MESSAGE] 拡張通知を受け取る または [SECONDS] 秒待った>`
-- `[KEY] キー押下の拡張通知まで待つ`
-- `<[KEY] キー押下の拡張通知 または [SECONDS] 秒を待った>`
+<!-- BEGIN GENERATED BLOCKS -->
+
+### `send extended notification [MESSAGE]`
+
+Sends a named notification to every script currently waiting for that name.
+
+| Property | Value |
+|---|---|
+| Type | Command |
+| Opcode | `sendNotification` |
+| `MESSAGE` | String, default: `next` |
+
+### `wait until extended notification [MESSAGE] is received`
+
+Pauses the current script until the named notification is received.
+
+| Property | Value |
+|---|---|
+| Type | Command |
+| Opcode | `waitForNotification` |
+| `MESSAGE` | String, default: `next` |
+
+### `extended notification [MESSAGE] received before [SECONDS] seconds`
+
+Returns true when the named notification arrives before the timeout, otherwise false.
+
+| Property | Value |
+|---|---|
+| Type | Boolean |
+| Opcode | `waitForNotificationOrTimeout` |
+| `MESSAGE` | String, default: `next` |
+| `SECONDS` | Number, default: `5` |
+
+### `wait until [KEY] key is pressed`
+
+Pauses the current script until the selected key is pressed.
+
+| Property | Value |
+|---|---|
+| Type | Command |
+| Opcode | `waitForKey` |
+| `KEY` | String, default: `space`, menu: `keyMenu` |
+
+### `[KEY] key pressed before [SECONDS] seconds`
+
+Returns true when the selected key is pressed before the timeout, otherwise false.
+
+| Property | Value |
+|---|---|
+| Type | Boolean |
+| Opcode | `waitForKeyOrTimeout` |
+| `KEY` | String, default: `space`, menu: `keyMenu` |
+| `SECONDS` | Number, default: `5` |
+
+<!-- END GENERATED BLOCKS -->
 
 The timeout-enabled Boolean blocks return `true` when the notification or key press occurs first and `false` when the timeout occurs first.
 
@@ -21,6 +71,12 @@ The timeout-enabled Boolean blocks return `true` when the notification or key pr
 ```bash
 npm install
 npm run check
+```
+
+Regenerate block documentation after changing `src/block-definitions.json`:
+
+```bash
+npm run docs
 ```
 
 For continuous rebuilding:
