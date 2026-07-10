@@ -1,5 +1,5 @@
 import {extensionConfig} from './config.js';
-import {keyMenuItems, translate} from './i18n.js';
+import {createKeyMenuItems, translate} from './i18n.js';
 
 type Waiter = (result: boolean) => void;
 type WaiterRegistry = Map<string, Set<Waiter>>;
@@ -69,7 +69,7 @@ export class ExtendedNotification implements TurboWarpExtension {
           }
         }
       ],
-      menus: {keyMenu: {acceptReporters: true, items: keyMenuItems}}
+      menus: {keyMenu: {acceptReporters: true, items: createKeyMenuItems()}}
     };
   }
 
