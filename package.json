@@ -1,7 +1,7 @@
 {
-  "name": "turbowarp-extended-notification",
+  "name": "@kubohiroya/turbowarp-extended-notification",
   "version": "0.1.0",
-  "private": true,
+  "author": "Hiroya Kubo <hiroya@cuc.ac.jp>",
   "type": "module",
   "scripts": {
     "dev": "vite build --watch",
@@ -10,13 +10,13 @@
     "lint": "eslint src tests vite.config.ts",
     "test": "vitest run",
     "docs": "node scripts/generate-readme.mjs",
-    "docs:check": "npm run docs && git diff --exit-code -- README.md",
-    "check": "npm run typecheck && npm run lint && npm run test && npm run build && npm run docs:check",
-    "check:dist": "npm run build && git diff --exit-code -- dist"
+    "docs:check": "pnpm run docs && git diff --exit-code -- README.md",
+    "check": "pnpm run typecheck && npm run lint && pnpm run test && npm run build && npm run docs:check",
+    "check:dist": "pnpm run build && git diff --exit-code -- dist"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
-    "@kubohiroya/vite-plugin-turbowarp-extension": "github:kubohiroya/vite-plugin-turbowarp-extension#a96b1ad92a5b9954d99c68b5e4a318c0722ec9e6",
+    "@kubohiroya/vite-plugin-turbowarp-extension": "0.1.0",
     "@types/node": "^24.10.1",
     "eslint": "^9.39.1",
     "typescript": "^5.9.3",
