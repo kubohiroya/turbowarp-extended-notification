@@ -1,0 +1,55 @@
+{
+  "extensionName": "Extended Notification",
+  "blocks": [
+    {
+      "opcode": "sendNotification",
+      "blockType": "COMMAND",
+      "text": "send extended notification [MESSAGE]",
+      "description": "Sends a named notification to every script currently waiting for that name.",
+      "arguments": {
+        "MESSAGE": {"type": "STRING", "defaultValue": "next"}
+      }
+    },
+    {
+      "opcode": "waitForNotification",
+      "blockType": "COMMAND",
+      "text": "wait until extended notification [MESSAGE] is received",
+      "description": "Pauses the current script until the named notification is received.",
+      "arguments": {
+        "MESSAGE": {"type": "STRING", "defaultValue": "next"}
+      }
+    },
+    {
+      "opcode": "waitForNotificationOrTimeout",
+      "blockType": "BOOLEAN",
+      "text": "extended notification [MESSAGE] received before [SECONDS] seconds",
+      "description": "Returns true when the named notification arrives before the timeout, otherwise false.",
+      "disableMonitor": true,
+      "arguments": {
+        "MESSAGE": {"type": "STRING", "defaultValue": "next"},
+        "SECONDS": {"type": "NUMBER", "defaultValue": 5}
+      }
+    },
+    {
+      "opcode": "waitForKey",
+      "blockType": "COMMAND",
+      "text": "wait until [KEY] key is pressed",
+      "description": "Pauses the current script until the selected key is pressed.",
+      "section": "keyboard",
+      "arguments": {
+        "KEY": {"type": "STRING", "defaultValue": "space", "menu": "keyMenu"}
+      }
+    },
+    {
+      "opcode": "waitForKeyOrTimeout",
+      "blockType": "BOOLEAN",
+      "text": "[KEY] key pressed before [SECONDS] seconds",
+      "description": "Returns true when the selected key is pressed before the timeout, otherwise false.",
+      "disableMonitor": true,
+      "arguments": {
+        "KEY": {"type": "STRING", "defaultValue": "space", "menu": "keyMenu"},
+        "SECONDS": {"type": "NUMBER", "defaultValue": 5}
+      }
+    }
+  ]
+}

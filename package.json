@@ -9,7 +9,9 @@
     "build": "vite build",
     "lint": "eslint src tests vite.config.ts",
     "test": "vitest run",
-    "check": "npm run typecheck && npm run lint && npm run test && npm run build",
+    "docs": "node scripts/generate-readme.mjs",
+    "docs:check": "npm run docs && git diff --exit-code -- README.md",
+    "check": "npm run typecheck && npm run lint && npm run test && npm run build && npm run docs:check",
     "check:dist": "npm run build && git diff --exit-code -- dist"
   },
   "devDependencies": {

@@ -1,9 +1,30 @@
 import {extensionConfig} from './config.js';
+import definitions from './block-definitions.json' with {type: 'json'};
 import {createKeyMenuItems, translate} from './i18n.js';
 
 type Waiter = (result: boolean) => void;
 type WaiterRegistry = Map<string, Set<Waiter>>;
 type BlockArguments = {MESSAGE?: unknown; KEY?: unknown; SECONDS?: unknown};
+type BlockTypeName = 'COMMAND' | 'BOOLEAN';
+type ArgumentTypeName = 'STRING' | 'NUMBER';
+
+interface DefinitionArgument {
+  type: ArgumentTypeName;
+  defaultValue: string | number;
+  menu?: string;
+}
+
+interface DefinitionBlock {
+  opcode: string;
+  blockType: BlockTypeName;
+  text: string;
+  description: string;
+  disableMonitor?: boolean;
+  section?: string;
+  arguments: Record<string, DefinitionArgument>;
+}
+
+const blockDefinitions = definitions.blocks as readonly DefinitionBlock[];
 
 const KEY_ALIASES: Record<string, string> = {
   space: 'space', spacebar: 'space', ' ': 'space',
@@ -29,46 +50,19 @@ export class ExtendedNotification implements TurboWarpExtension {
   }
 
   public getInfo(): Record<string, unknown> {
+    const blocks: Array<Record<string, unknown> | string> = [];
+    let section: string | undefined;
+    for (const block of blockDefinitions) {
+      if (block.section && block.section !== section) blocks.push('---');
+      blocks.push(this.toScratchBlock(block));
+      if (block.section) section = block.section;
+    }
+
     return {
       id: extensionConfig.id,
-      name: translate('Extended Notification'),
+      name: translate(definitions.extensionName),
       color1: '#5B67A5', color2: '#4C5794', color3: '#3F487E',
-      blocks: [
-        {
-          opcode: 'sendNotification', blockType: Scratch.BlockType.COMMAND,
-          text: translate('send extended notification [MESSAGE]'),
-          arguments: {MESSAGE: {type: Scratch.ArgumentType.STRING, defaultValue: 'next'}}
-        },
-        {
-          opcode: 'waitForNotification', blockType: Scratch.BlockType.COMMAND,
-          text: translate('wait until extended notification [MESSAGE] is received'),
-          arguments: {MESSAGE: {type: Scratch.ArgumentType.STRING, defaultValue: 'next'}}
-        },
-        {
-          opcode: 'waitForNotificationOrTimeout', blockType: Scratch.BlockType.BOOLEAN,
-          text: translate('extended notification [MESSAGE] received before [SECONDS] seconds'),
-          disableMonitor: true,
-          arguments: {
-            MESSAGE: {type: Scratch.ArgumentType.STRING, defaultValue: 'next'},
-            SECONDS: {type: Scratch.ArgumentType.NUMBER, defaultValue: 5}
-          }
-        },
-        '---',
-        {
-          opcode: 'waitForKey', blockType: Scratch.BlockType.COMMAND,
-          text: translate('wait until [KEY] key is pressed'),
-          arguments: {KEY: {type: Scratch.ArgumentType.STRING, menu: 'keyMenu', defaultValue: 'space'}}
-        },
-        {
-          opcode: 'waitForKeyOrTimeout', blockType: Scratch.BlockType.BOOLEAN,
-          text: translate('[KEY] key pressed before [SECONDS] seconds'),
-          disableMonitor: true,
-          arguments: {
-            KEY: {type: Scratch.ArgumentType.STRING, menu: 'keyMenu', defaultValue: 'space'},
-            SECONDS: {type: Scratch.ArgumentType.NUMBER, defaultValue: 5}
-          }
-        }
-      ],
+      blocks,
       menus: {keyMenu: {acceptReporters: true, items: createKeyMenuItems()}}
     };
   }
@@ -91,6 +85,25 @@ export class ExtendedNotification implements TurboWarpExtension {
 
   public waitForKeyOrTimeout(args: BlockArguments): Promise<boolean> {
     return this.wait(this.keyWaiters, this.normalizeKey(args.KEY), this.timeout(args.SECONDS));
+  }
+
+  private toScratchBlock(block: DefinitionBlock): Record<string, unknown> {
+    return {
+      opcode: block.opcode,
+      blockType: Scratch.BlockType[block.blockType],
+      text: translate(block.text),
+      ...(block.disableMonitor ? {disableMonitor: true} : {}),
+      arguments: Object.fromEntries(
+        Object.entries(block.arguments).map(([name, argument]) => [
+          name,
+          {
+            type: Scratch.ArgumentType[argument.type],
+            defaultValue: argument.defaultValue,
+            ...(argument.menu ? {menu: argument.menu} : {})
+          }
+        ])
+      )
+    };
   }
 
   private wait(registry: WaiterRegistry, name: string, timeout: number | null): Promise<boolean> {
