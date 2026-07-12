@@ -6,6 +6,12 @@ A TurboWarp extension for waiting on custom notifications or key presses with op
 
 The extension provides a small, reusable synchronization mechanism for TurboWarp projects. Input-specific logic such as pose recognition, speech recognition, or sprite click detection remains in controller sprites, which emit named extended notifications.
 
+## Installation
+
+Download [`dist/extended-notification.js`](dist/extended-notification.js), then open TurboWarp Desktop and load it as a local custom extension. Enable **Run extension without sandbox** when prompted.
+
+The built JavaScript file is committed to this repository so that users do not need to install Node.js or run the build process.
+
 ## Blocks
 
 <!-- BEGIN GENERATED BLOCKS -->
@@ -91,7 +97,7 @@ The Vite build creates:
 dist/extended-notification.js
 ```
 
-Load this file as a TurboWarp custom extension and enable **Run extension without sandbox**.
+Commit the rebuilt file whenever the extension source changes.
 
 ## Design
 
