@@ -10,9 +10,9 @@
     "lint": "eslint src tests vite.config.ts",
     "test": "vitest run",
     "docs": "node scripts/generate-readme.mjs",
-    "docs:check": "pnpm run docs && git diff --exit-code -- README.md",
-    "check": "pnpm run typecheck && npm run lint && pnpm run test && npm run build && npm run docs:check && npm run check:dist",
-    "check:dist": "pnpm run build && git diff --exit-code -- dist"
+    "docs:check": "npm run docs && git diff --exit-code -- README.md",
+    "check": "npm run typecheck && npm run lint && npm run test && npm run build && npm run docs:check && npm run check:dist",
+    "check:dist": "npm run build && git diff --exit-code -- dist"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
