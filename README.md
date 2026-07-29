@@ -12,6 +12,18 @@ Download [`dist/extended-notification.js`](dist/extended-notification.js), then 
 
 The built JavaScript file is committed to this repository so that users do not need to install Node.js or run the build process.
 
+Alternatively, install the npm package:
+
+```bash
+npm install @kubohiroya/turbowarp-extended-notification
+```
+
+The extension bundle is then available at:
+
+```text
+node_modules/@kubohiroya/turbowarp-extended-notification/dist/extended-notification.js
+```
+
 ## Blocks
 
 <!-- BEGIN GENERATED BLOCKS -->

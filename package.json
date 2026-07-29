@@ -1,24 +1,50 @@
 {
   "name": "@kubohiroya/turbowarp-extended-notification",
-  "version": "0.1.0",
+  "version": "0.1.1",
+  "description": "A TurboWarp extension for waiting on custom notifications or key presses with optional timeouts.",
+  "keywords": [
+    "turbowarp",
+    "scratch",
+    "extension",
+    "notification"
+  ],
   "author": "Hiroya Kubo <hiroya@cuc.ac.jp>",
+  "license": "MPL-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kubohiroya/turbowarp-extended-notification.git"
+  },
+  "bugs": {
+    "url": "https://github.com/kubohiroya/turbowarp-extended-notification/issues"
+  },
+  "homepage": "https://github.com/kubohiroya/turbowarp-extended-notification#readme",
   "type": "module",
+  "files": [
+    "dist/extended-notification.js",
+    "docs/specification.md",
+    "CHANGELOG.md"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "dev": "vite build --watch",
     "typecheck": "tsc --noEmit",
     "build": "vite build",
     "lint": "eslint src tests vite.config.ts",
     "test": "vitest run",
+    "audit": "npm audit",
     "docs": "node scripts/generate-readme.mjs",
-    "docs:check": "npm run docs && git diff --exit-code -- README.md",
-    "check": "npm run typecheck && npm run lint && npm run test && npm run build && npm run docs:check && npm run check:dist",
-    "check:dist": "npm run build && git diff --exit-code -- dist"
+    "docs:check": "node scripts/generate-readme.mjs --check",
+    "check": "npm run audit && npm run typecheck && npm run lint && npm run test && npm run build && npm run docs:check && npm run check:dist",
+    "check:dist": "npm run build && git diff --exit-code -- dist",
+    "prepublishOnly": "npm run check"
   },
   "devDependencies": {
-    "@eslint/js": "^9.39.1",
+    "@eslint/js": "^10.0.1",
     "@kubohiroya/vite-plugin-turbowarp-extension": "0.1.0",
     "@types/node": "^24.10.1",
-    "eslint": "^9.39.1",
+    "eslint": "^10.8.0",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.48.0",
     "vite": "^7.0.0",
