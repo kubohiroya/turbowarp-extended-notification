@@ -20,7 +20,14 @@ const next = readme.replace(
   new RegExp(`${escapeRegExp(START)}[\\s\\S]*?${escapeRegExp(END)}`),
   replacement
 );
-await writeFile(readmeUrl, next);
+
+if (process.argv.includes('--check')) {
+  if (next !== readme) {
+    throw new Error('README.md block documentation is out of date. Run `npm run docs`.');
+  }
+} else {
+  await writeFile(readmeUrl, next);
+}
 
 function renderBlock(block) {
   const rows = [
