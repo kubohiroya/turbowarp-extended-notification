@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="TurboWarpでExtended Notificationを導入・利用するためのガイドです。">
+    <link rel="canonical" href="https://kubohiroya.github.io/turbowarp-extended-notification/ja/">
+    <link rel="alternate" hreflang="en" href="https://kubohiroya.github.io/turbowarp-extended-notification/">
+    <link rel="alternate" hreflang="ja" href="https://kubohiroya.github.io/turbowarp-extended-notification/ja/">
+    <link rel="alternate" hreflang="x-default" href="https://kubohiroya.github.io/turbowarp-extended-notification/">
+    <link rel="stylesheet" href="../site.css">
+    <title>Extended Notification — TurboWarpユーザーガイド</title>
+  </head>
+  <body>
+    <a class="skip-link" href="#content">本文へ移動</a>
+    <header class="site-header">
+      <div class="header-inner">
+        <a class="brand" href="./" aria-label="Extended Notification 日本語ガイドの先頭">
+          <span class="brand-mark" aria-hidden="true">N!</span>
+          <span class="brand-name">Extended Notification</span>
+        </a>
+        <nav class="main-nav" aria-label="ガイド内メニュー">
+          <a href="#install">導入</a>
+          <a href="#blocks">ブロック</a>
+          <a href="#behavior">動作</a>
+        </nav>
+        <a
+          class="github-link"
+          href="https://github.com/kubohiroya/turbowarp-extended-notification"
+          aria-label="GitHubでソースコードを見る"
+        >
+          <img src="../assets/github-mark.svg" width="24" height="24" alt="">
+          <span class="github-link-label">GitHub</span>
+        </a>
+        <nav class="language-nav" aria-label="言語">
+          <a href="../" lang="en" hreflang="en">English</a>
+          <a href="./" lang="ja" hreflang="ja" aria-current="page">日本語</a>
+        </nav>
+      </div>
+    </header>
+    <main id="content">
+      <section class="hero">
+        <p class="eyebrow">TurboWarpカスタム拡張機能</p>
+        <h1>必要な合図を待つ。</h1>
+        <p class="lede">名前付き通知、キーボードイベント、任意のタイムアウトを使い、
+          ポーリングせずにスクリプト同士を連携できます。</p>
+        <div class="signal" aria-label="通知によって待機中のスクリプトが再開する流れ">
+          <span>コントローラー</span><b>「next」を通知</b><i>→</i><b>待機中のスクリプト</b>
+        </div>
+      </section>
+
+      <section id="install">
+        <p class="eyebrow">01 · 導入</p>
+        <h2>レビュー済みの0.1.1を使う。</h2>
+        <ol class="steps">
+          <li>TurboWarp Desktopを開きます。</li>
+          <li>次のバージョン固定URLをカスタム拡張機能として追加します。</li>
+          <li>確認画面で<strong>サンドボックスなしで実行</strong>を有効にします。</li>
+        </ol>
+        <pre><code>https://cdn.jsdelivr.net/npm/@kubohiroya/turbowarp-extended-notification@0.1.1/dist/extended-notification.js</code></pre>
+        <p class="warning"><strong>なぜサンドボックスなしで実行するのですか？</strong>
+          キー入力の待機ではブラウザーのキーイベントを監視し、TurboWarpランタイムの停止時には
+          すべての待機を解除するためです。信頼できる配布元からだけ読み込んでください。</p>
+        <p>ローカルの依存関係として導入する場合:</p>
+        <pre><code>npm install --save-exact @kubohiroya/turbowarp-extended-notification@0.1.1</code></pre>
+      </section>
+
+      <section id="blocks">
+        <p class="eyebrow">02 · ブロック</p>
+        <h2>通知する、待つ、タイムアウトと競争する。</h2>
+        <div class="cards">
+          <article><h3>通知を送る</h3><code>send extended notification [MESSAGE]</code><p>同じ名前の通知をすでに待っているすべてのスクリプトを再開します。</p></article>
+          <article><h3>通知を待つ</h3><code>wait until extended notification [MESSAGE] is received</code><p>その名前の通知が届くまで、このスクリプトを一時停止します。</p></article>
+          <article><h3>タイムアウト付きで待つ</h3><code>extended notification [MESSAGE] received before [SECONDS] seconds</code><p>通知ならtrue、タイムアウトまたはプロジェクト停止ならfalseを返します。</p></article>
+          <article><h3>キーを待つ</h3><code>wait until [KEY] key is pressed</code><p>ブロックが待機を始めた後の新しいkeydownを監視します。</p></article>
+          <article><h3>キーまたはタイムアウトを待つ</h3><code>[KEY] key pressed before [SECONDS] seconds</code><p>どちらのイベントが先に起きたかを返します。</p></article>
+        </div>
+      </section>
+
+      <section id="behavior">
+        <p class="eyebrow">03 · 動作</p>
+        <h2>通知はキューではなく、その場限りの合図です。</h2>
+        <ul>
+          <li>通知を送ると、同じ名前を待っている現在のスクリプトがすべて再開します。</li>
+          <li>待機を始める前に送られた通知は保持されません。</li>
+          <li>コントローラーが合図を送る前に、待機側を登録してください。</li>
+          <li>キーを押し続けたときに発生する反復keydownは無視されます。</li>
+          <li>0、負数、有限でないタイムアウトは即時に満了します。</li>
+          <li>プロジェクトの開始または停止によって、未完了の待機は解除されます。</li>
+        </ul>
+        <p>正規化と互換性の詳細は<a href="./specification.md">完全な動作仕様</a>を参照してください。</p>
+      </section>
+    </main>
+    <footer>Extended Notification 0.1.1 · MPL-2.0</footer>
+  </body>
+</html>
