@@ -2,6 +2,8 @@
 
 A TurboWarp extension for waiting on custom notifications or key presses with optional timeouts.
 
+**User guide:** <https://kubohiroya.github.io/turbowarp-extended-notification/>
+
 ## Purpose
 
 The extension provides a small, reusable synchronization mechanism for TurboWarp projects. Input-specific logic such as pose recognition, speech recognition, or sprite click detection remains in controller sprites, which emit named extended notifications.
@@ -15,7 +17,7 @@ The built JavaScript file is committed to this repository so that users do not n
 Alternatively, install the npm package:
 
 ```bash
-npm install @kubohiroya/turbowarp-extended-notification
+npm install --save-exact @kubohiroya/turbowarp-extended-notification@0.1.1
 ```
 
 The extension bundle is then available at:
@@ -110,6 +112,10 @@ dist/extended-notification.js
 ```
 
 Commit the rebuilt file whenever the extension source changes.
+
+The GitHub Pages workflow publishes `docs/` after documentation changes reach
+`main`. Maintainers should follow [RELEASING.md](RELEASING.md) when publishing a
+new npm version and matching GitHub Release.
 
 ## Design
 
