@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Install and use Extended Notification in TurboWarp.">
+    <link rel="canonical" href="https://kubohiroya.github.io/turbowarp-extended-notification/">
+    <link rel="stylesheet" href="./site.css">
+    <title>Extended Notification — TurboWarp user guide</title>
+  </head>
+  <body>
+    <header>
+      <nav aria-label="Guide sections">
+        <a class="brand" href="#top">Extended Notification</a>
+        <a href="#install">Install</a>
+        <a href="#blocks">Blocks</a>
+        <a href="#behavior">Behavior</a>
+        <a href="https://github.com/kubohiroya/turbowarp-extended-notification">GitHub</a>
+      </nav>
+    </header>
+    <main id="top">
+      <section class="hero">
+        <p class="eyebrow">TurboWarp custom extension</p>
+        <h1>Wait for the signal you need.</h1>
+        <p class="lede">Coordinate scripts with named notifications, keyboard events,
+          and optional timeouts—without polling.</p>
+        <div class="signal" aria-label="A notification resumes waiting scripts">
+          <span>controller</span><b>send “next”</b><i>→</i><b>waiting scripts</b>
+        </div>
+      </section>
+
+      <section id="install">
+        <p class="eyebrow">01 · Install</p>
+        <h2>Use the reviewed 0.1.1 build.</h2>
+        <ol class="steps">
+          <li>Open TurboWarp Desktop.</li>
+          <li>Add the version-pinned URL below as a custom extension.</li>
+          <li>Enable <strong>Run extension without sandbox</strong> when prompted.</li>
+        </ol>
+        <pre><code>https://cdn.jsdelivr.net/npm/@kubohiroya/turbowarp-extended-notification@0.1.1/dist/extended-notification.js</code></pre>
+        <p class="warning"><strong>Why unsandboxed?</strong> Keyboard waits listen for
+          browser key events and all waits are cancelled when the TurboWarp runtime stops.
+          Load the extension only from a source you trust.</p>
+        <p>For a local dependency, run:</p>
+        <pre><code>npm install --save-exact @kubohiroya/turbowarp-extended-notification@0.1.1</code></pre>
+      </section>
+
+      <section id="blocks">
+        <p class="eyebrow">02 · Blocks</p>
+        <h2>Send, wait, or race a timeout.</h2>
+        <div class="cards">
+          <article><h3>Send a notification</h3><code>send extended notification [MESSAGE]</code><p>Resumes every script already waiting for the same name.</p></article>
+          <article><h3>Wait for a notification</h3><code>wait until extended notification [MESSAGE] is received</code><p>Pauses this script until that notification arrives.</p></article>
+          <article><h3>Wait with a timeout</h3><code>extended notification [MESSAGE] received before [SECONDS] seconds</code><p>Returns true for the notification and false for timeout or project stop.</p></article>
+          <article><h3>Wait for a key</h3><code>wait until [KEY] key is pressed</code><p>Observes a new keydown after the block starts waiting.</p></article>
+          <article><h3>Wait for a key or timeout</h3><code>[KEY] key pressed before [SECONDS] seconds</code><p>Returns which event happened first.</p></article>
+        </div>
+      </section>
+
+      <section id="behavior">
+        <p class="eyebrow">03 · Behavior</p>
+        <h2>Notifications are live signals, not a queue.</h2>
+        <ul>
+          <li>A send resumes all current waiters with the same name.</li>
+          <li>A notification sent before a wait begins is not retained.</li>
+          <li>Register the waits before the controller sends its signal.</li>
+          <li>Repeated keydown events from holding a key are ignored.</li>
+          <li>Zero, negative, and non-finite timeouts expire immediately.</li>
+          <li>Starting or stopping the project cancels pending waits.</li>
+        </ul>
+        <p>See the <a href="./specification.md">complete behavior specification</a>
+          for normalization and compatibility details.</p>
+      </section>
+    </main>
+    <footer>Extended Notification 0.1.1 · MPL-2.0</footer>
+  </body>
+</html>
