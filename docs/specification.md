@@ -1,5 +1,7 @@
 # Extended Notification Specification
 
+[日本語](./ja/specification.md)
+
 ## Scope
 
 Extended Notification provides a small synchronization layer for TurboWarp projects. It allows one script to emit a named notification and other scripts to wait for that notification. It also provides equivalent waiting blocks for keyboard input.

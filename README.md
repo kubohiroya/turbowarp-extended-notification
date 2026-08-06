@@ -2,7 +2,7 @@
 
 A TurboWarp extension for waiting on custom notifications or key presses with optional timeouts.
 
-**User guide:** <https://kubohiroya.github.io/turbowarp-extended-notification/>
+**User guide:** [English](https://kubohiroya.github.io/turbowarp-extended-notification/) · [日本語](https://kubohiroya.github.io/turbowarp-extended-notification/ja/)
 
 ## Purpose
 
