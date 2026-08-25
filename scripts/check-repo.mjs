@@ -27,8 +27,8 @@ process.stdout.write('Repository policy is aligned.\n');
 
 function checkPolicy() {
   if (policy.schemaVersion !== 1) errors.push('repo-policy.json schemaVersion must be 1');
-  if (policy.productName !== 'TurboWarp Extended Notification') {
-    errors.push('repo-policy.json productName must be TurboWarp Extended Notification');
+  if (policy.productName !== 'TurboWarp-Extended-Notification') {
+    errors.push('repo-policy.json productName must be TurboWarp-Extended-Notification');
   }
   if (policy.licensePolicy !== 'mpl-2.0') errors.push('repo-policy.json licensePolicy must be mpl-2.0');
   if (policy.packageManager !== 'pnpm') errors.push('repo-policy.json packageManager must be pnpm');
