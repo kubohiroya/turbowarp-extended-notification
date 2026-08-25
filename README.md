@@ -26,7 +26,7 @@ The extension bundle is then available at:
 node_modules/@kubohiroya/turbowarp-extended-notification/dist/extended-notification.js
 ```
 
-## Blocks
+## Block reference
 
 <!-- BEGIN GENERATED BLOCKS -->
 
@@ -89,20 +89,21 @@ The timeout-enabled Boolean blocks return `true` when the notification or key pr
 ## Development
 
 ```bash
-npm install
-npm run check
+corepack enable
+pnpm install --frozen-lockfile
+pnpm run check
 ```
 
 Regenerate block documentation after changing `src/block-definitions.json`:
 
 ```bash
-npm run docs
+pnpm run docs
 ```
 
 For continuous rebuilding:
 
 ```bash
-npm run dev
+pnpm run dev
 ```
 
 The Vite build creates:
@@ -117,10 +118,14 @@ The GitHub Pages workflow publishes `docs/` after documentation changes reach
 `main`. Maintainers should follow [RELEASING.md](RELEASING.md) when publishing a
 new npm version and matching GitHub Release.
 
+This repository uses Node.js 22 or later and pnpm through Corepack. The package `homepage` points
+to the Pages user guide because that is the end-user entrypoint; GitHub remains the source and issue
+tracker through `repository` and `bugs` metadata.
+
 ## Design
 
 Notifications are not retained. An emitted notification resumes every script that is currently waiting for the same name. See [docs/specification.md](docs/specification.md) for the complete behavior.
 
 ## License
 
-MPL-2.0
+SPDX-License-Identifier: MPL-2.0

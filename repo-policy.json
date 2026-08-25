@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "productName": "TurboWarp Extended Notification",
+  "packageType": "extension",
+  "licensePolicy": "mpl-2.0",
+  "packageManager": "pnpm",
+  "homepage": "pages",
+  "node": {
+    "minimum": "22"
+  },
+  "extension": {
+    "id": "kubohiroyaextendednotification",
+    "bundle": "dist/extended-notification.js"
+  },
+  "exceptions": {
+    "upstreamFork": false,
+    "mixedContentLicenses": false,
+    "legacyPackageName": false,
+    "thirdPartyBundle": false
+  }
+}
