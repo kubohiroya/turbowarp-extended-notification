@@ -1,4 +1,6 @@
 allowBuilds:
   esbuild: true
+minimumReleaseAgeExclude:
+  - '@kubohiroya/vite-plugin-turbowarp-extension@0.4.0'
 overrides:
   nanoid: 3.3.18
