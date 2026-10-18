@@ -60,6 +60,7 @@ export class ExtendedNotification implements TurboWarpExtension {
 
     return {
       id: extensionConfig.id,
+      docsURI: 'https://kubohiroya.github.io/turbowarp-extended-notification/',
       name: translate(definitions.extensionName),
       color1: '#5B67A5', color2: '#4C5794', color3: '#3F487E',
       blocks,
