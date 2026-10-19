@@ -1,0 +1,256 @@
+{
+  "id": "kubohiroyaextendednotification",
+  "name": "Extended Notification",
+  "color1": "#5B67A5",
+  "color2": "#4C5794",
+  "color3": "#3F487E",
+  "blocks": [
+    {
+      "opcode": "sendNotification",
+      "blockType": "command",
+      "text": "send extended notification [MESSAGE]",
+      "arguments": {
+        "MESSAGE": {
+          "type": "string",
+          "defaultValue": "next"
+        }
+      }
+    },
+    {
+      "opcode": "waitForNotification",
+      "blockType": "command",
+      "text": "wait until extended notification [MESSAGE] is received",
+      "arguments": {
+        "MESSAGE": {
+          "type": "string",
+          "defaultValue": "next"
+        }
+      }
+    },
+    {
+      "opcode": "waitForNotificationOrTimeout",
+      "blockType": "Boolean",
+      "text": "extended notification [MESSAGE] received before [SECONDS] seconds",
+      "disableMonitor": true,
+      "arguments": {
+        "MESSAGE": {
+          "type": "string",
+          "defaultValue": "next"
+        },
+        "SECONDS": {
+          "type": "number",
+          "defaultValue": 5
+        }
+      }
+    },
+    "---",
+    {
+      "opcode": "waitForKey",
+      "blockType": "command",
+      "text": "wait until [KEY] key is pressed",
+      "arguments": {
+        "KEY": {
+          "type": "string",
+          "defaultValue": "space",
+          "menu": "keyMenu"
+        }
+      }
+    },
+    {
+      "opcode": "waitForKeyOrTimeout",
+      "blockType": "Boolean",
+      "text": "[KEY] key pressed before [SECONDS] seconds",
+      "disableMonitor": true,
+      "arguments": {
+        "KEY": {
+          "type": "string",
+          "defaultValue": "space",
+          "menu": "keyMenu"
+        },
+        "SECONDS": {
+          "type": "number",
+          "defaultValue": 5
+        }
+      }
+    }
+  ],
+  "menus": {
+    "keyMenu": {
+      "acceptReporters": true,
+      "items": [
+        {
+          "text": "space",
+          "value": "space"
+        },
+        {
+          "text": "up arrow",
+          "value": "arrowup"
+        },
+        {
+          "text": "down arrow",
+          "value": "arrowdown"
+        },
+        {
+          "text": "right arrow",
+          "value": "arrowright"
+        },
+        {
+          "text": "left arrow",
+          "value": "arrowleft"
+        },
+        {
+          "text": "enter",
+          "value": "enter"
+        },
+        {
+          "text": "escape",
+          "value": "escape"
+        },
+        {
+          "text": "a",
+          "value": "a"
+        },
+        {
+          "text": "b",
+          "value": "b"
+        },
+        {
+          "text": "c",
+          "value": "c"
+        },
+        {
+          "text": "d",
+          "value": "d"
+        },
+        {
+          "text": "e",
+          "value": "e"
+        },
+        {
+          "text": "f",
+          "value": "f"
+        },
+        {
+          "text": "g",
+          "value": "g"
+        },
+        {
+          "text": "h",
+          "value": "h"
+        },
+        {
+          "text": "i",
+          "value": "i"
+        },
+        {
+          "text": "j",
+          "value": "j"
+        },
+        {
+          "text": "k",
+          "value": "k"
+        },
+        {
+          "text": "l",
+          "value": "l"
+        },
+        {
+          "text": "m",
+          "value": "m"
+        },
+        {
+          "text": "n",
+          "value": "n"
+        },
+        {
+          "text": "o",
+          "value": "o"
+        },
+        {
+          "text": "p",
+          "value": "p"
+        },
+        {
+          "text": "q",
+          "value": "q"
+        },
+        {
+          "text": "r",
+          "value": "r"
+        },
+        {
+          "text": "s",
+          "value": "s"
+        },
+        {
+          "text": "t",
+          "value": "t"
+        },
+        {
+          "text": "u",
+          "value": "u"
+        },
+        {
+          "text": "v",
+          "value": "v"
+        },
+        {
+          "text": "w",
+          "value": "w"
+        },
+        {
+          "text": "x",
+          "value": "x"
+        },
+        {
+          "text": "y",
+          "value": "y"
+        },
+        {
+          "text": "z",
+          "value": "z"
+        },
+        {
+          "text": "0",
+          "value": "0"
+        },
+        {
+          "text": "1",
+          "value": "1"
+        },
+        {
+          "text": "2",
+          "value": "2"
+        },
+        {
+          "text": "3",
+          "value": "3"
+        },
+        {
+          "text": "4",
+          "value": "4"
+        },
+        {
+          "text": "5",
+          "value": "5"
+        },
+        {
+          "text": "6",
+          "value": "6"
+        },
+        {
+          "text": "7",
+          "value": "7"
+        },
+        {
+          "text": "8",
+          "value": "8"
+        },
+        {
+          "text": "9",
+          "value": "9"
+        }
+      ]
+    }
+  }
+}

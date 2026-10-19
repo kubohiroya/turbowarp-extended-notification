@@ -1,3 +1,4 @@
+import {registerFixedInputEditors} from './fixed-input-editors.js';
 import {extensionConfig} from './config.js';
 import definitions from './block-definitions.json' with {type: 'json'};
 import {createKeyMenuItems, translate} from './i18n.js';
@@ -41,6 +42,8 @@ const KEY_ALIASES: Record<string, string> = {
 };
 
 export class ExtendedNotification implements TurboWarpExtension {
+  private fixedEditorsDispose: (() => void) | undefined;
+
   private readonly notificationWaiters: WaiterRegistry = new Map();
   private readonly keyWaiters: WaiterRegistry = new Map();
 
@@ -58,7 +61,7 @@ export class ExtendedNotification implements TurboWarpExtension {
       if (block.section) section = block.section;
     }
 
-    return {
+    const info = {
       id: extensionConfig.id,
       docsURI: 'https://kubohiroya.github.io/turbowarp-extended-notification/',
       name: translate(definitions.extensionName),
@@ -66,6 +69,8 @@ export class ExtendedNotification implements TurboWarpExtension {
       blocks,
       menus: {keyMenu: {acceptReporters: true, items: createKeyMenuItems()}}
     };
+    this.fixedEditorsDispose ??= registerFixedInputEditors(Scratch, (Scratch as unknown as {vm?: {runtime?: unknown}}).vm?.runtime, info.blocks);
+    return info;
   }
 
   public sendNotification(args: BlockArguments): void {
