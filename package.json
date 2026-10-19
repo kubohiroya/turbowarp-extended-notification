@@ -1,6 +1,6 @@
 {
   "name": "@kubohiroya/turbowarp-extended-notification",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "A TurboWarp extension for waiting on custom notifications or key presses with optional timeouts.",
   "keywords": [
     "turbowarp",
@@ -52,13 +52,19 @@
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
-    "@kubohiroya/vite-plugin-turbowarp-extension": "0.4.0",
+    "@kubohiroya/vite-plugin-turbowarp-extension": "0.6.1",
     "@types/node": "^24.10.1",
     "eslint": "^10.8.0",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.48.0",
     "vite": "^8.2.2",
     "vitest": "^4.1.10",
-    "@kubohiroya/turbowarp-extension-data-editor": "github:kubohiroya/turbowarp-extension-data-editor#485f0e550e622235624b5e9176820161aeeba252"
+    "@kubohiroya/turbowarp-extension-data-editor": "0.2.1"
+  },
+  "gitHead": "8dc8e9c91a50238857051c341e121155dce0245c",
+  "x-turbowarp-source": {
+    "revision": "8dc8e9c91a50238857051c341e121155dce0245c",
+    "revisionRole": "base-commit",
+    "sourceState": "local-release-overlay"
   }
 }
