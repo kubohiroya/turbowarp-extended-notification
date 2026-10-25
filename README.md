@@ -2,7 +2,7 @@
 
 <img src="assets/block-icon.svg" alt="" width="48" height="48">
 
-[日本語](README.ja.md)
+English | [日本語](README.ja.md)
 
 A TurboWarp extension for waiting on custom notifications or key presses with optional timeouts.
 
