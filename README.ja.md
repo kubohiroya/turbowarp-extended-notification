@@ -1,5 +1,7 @@
 # TurboWarp-Extended-Notification
 
+<img src="assets/block-icon.svg" alt="" width="48" height="48">
+
 [English](README.md)
 
 任意のタイムアウト付きで、独自の通知やキー入力を待つTurboWarp拡張機能です。
