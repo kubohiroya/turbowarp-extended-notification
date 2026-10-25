@@ -7,7 +7,7 @@
 (function (Scratch) {
   'use strict';
 
-  //#region src/config.ts
+  // src/config.ts
   var extensionConfig = {
   	id: "kubohiroyaextendednotification",
   	slug: "extended-notification",
@@ -35,8 +35,7 @@
   		}
   	}
   };
-  //#endregion
-  //#region src/fixed-input-editors.ts
+  // src/fixed-input-editors.ts
   var contracts = block_editor_fixed_inputs_schema_default.$defs;
   var repository = "turbowarp-extended-notification";
   var extensionId = "kubohiroyaextendednotification";
@@ -253,8 +252,7 @@
   		}
   	]
   };
-  //#endregion
-  //#region src/i18n.ts
+  // src/i18n.ts
   var translate = (text) => Scratch.translate(text);
   var createKeyMenuItems = () => [
   	{
@@ -294,8 +292,7 @@
   		value
   	}))
   ];
-  //#endregion
-  //#region \0@oxc-project+runtime@0.148.0/helpers/esm/typeof.js
+  // \0@oxc-project+runtime@0.155.0/helpers/esm/typeof.js
   function _typeof(o) {
   	"@babel/helpers - typeof";
   	return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o) {
@@ -304,8 +301,7 @@
   		return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o;
   	}, _typeof(o);
   }
-  //#endregion
-  //#region \0@oxc-project+runtime@0.148.0/helpers/esm/toPrimitive.js
+  // \0@oxc-project+runtime@0.155.0/helpers/esm/toPrimitive.js
   function toPrimitive(t, r) {
   	if ("object" != _typeof(t) || !t) return t;
   	var e = t[Symbol.toPrimitive];
@@ -316,14 +312,12 @@
   	}
   	return ("string" === r ? String : Number)(t);
   }
-  //#endregion
-  //#region \0@oxc-project+runtime@0.148.0/helpers/esm/toPropertyKey.js
+  // \0@oxc-project+runtime@0.155.0/helpers/esm/toPropertyKey.js
   function toPropertyKey(t) {
   	var i = toPrimitive(t, "string");
   	return "symbol" == _typeof(i) ? i : i + "";
   }
-  //#endregion
-  //#region \0@oxc-project+runtime@0.148.0/helpers/esm/defineProperty.js
+  // \0@oxc-project+runtime@0.155.0/helpers/esm/defineProperty.js
   function _defineProperty(e, r, t) {
   	return (r = toPropertyKey(r)) in e ? Object.defineProperty(e, r, {
   		value: t,
@@ -332,8 +326,7 @@
   		writable: !0
   	}) : e[r] = t, e;
   }
-  //#endregion
-  //#region src/extension.ts
+  // src/extension.ts
   var blockDefinitions = block_definitions_default.blocks;
   var KEY_ALIASES = {
   	space: "space",
@@ -486,10 +479,8 @@
   		return result;
   	}
   };
-  //#endregion
-  //#region src/index.ts
+  // src/index.ts
   if (extensionConfig.unsandboxed && !Scratch.extensions.unsandboxed) throw new Error(`${extensionConfig.name} must run unsandboxed.`);
   Scratch.extensions.register(new ExtendedNotification());
-  //#endregion
 
 })(Scratch);

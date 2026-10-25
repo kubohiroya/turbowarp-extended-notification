@@ -1,3 +1,4 @@
+import {extensionConfig} from '../src/config.js';
 import {ExtendedNotification} from '../src/extension.js';
 import previousGetInfo from './fixtures/fixed-getinfo-before.json' with {type: 'json'};
 import { describe, it, expect, vi } from "vitest";
@@ -361,6 +362,7 @@ it('actual getInfo preserves metadata and registers once without owner construct
   Object.assign(instance,{runtime,fixedEditorRuntime:runtime,enabled:true});
   const expected=structuredClone(previousGetInfo) as Record<string,unknown>;
   expected.docsURI='https://kubohiroya.github.io/turbowarp-extended-notification/';
+  expected.blockIconURI=extensionConfig.blockIconURI;
   expect(JSON.parse(JSON.stringify(instance.getInfo()))).toEqual(expected);
   expect(JSON.parse(JSON.stringify(instance.getInfo()))).toEqual(expected);
   expect(register).toHaveBeenCalledTimes(options.length);
