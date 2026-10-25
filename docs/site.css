@@ -57,3 +57,29 @@ footer { padding: 2rem 1.25rem; text-align: center; color: #aaa3bd; }
   .steps, .cards { grid-template-columns: 1fr; }
   section { padding: 3.5rem 0; }
 }
+
+:root{color-scheme:light dark}
+@media (prefers-color-scheme:light){
+  :root{color:#17132a;background:#faf9ff}
+  body{background:radial-gradient(circle at 80% 0,#e7ddff 0,transparent 32rem),#faf9ff}
+  a{color:#6f4fd8}
+  .skip-link{color:#faf9ff;background:#17132a}
+  .site-header{border-bottom-color:#17132a1f;background:#faf9ffe8}
+  .brand{color:#17132a}
+  .brand-mark{color:#faf9ff;background:#6f4fd8}
+  .main-nav a,.language-nav a{color:#5a5370}
+  .main-nav a:hover,.language-nav a:hover{color:#17132a;background:#17132a0d}
+  .github-link{color:#5a5370;background:#17132a08;border-color:#17132a1f}
+  .github-link:hover{color:#17132a;background:#17132a12;border-color:#6f4fd880}
+  .language-nav{border-left-color:#17132a1f}
+  .language-nav a[aria-current="page"]{color:#17132a;background:#17132a0d}
+  section{border-bottom-color:#17132a14}
+  .eyebrow{color:#6f4fd8}
+  .lede{color:#4a4460}
+  .signal span,.signal b{border-color:#17132a26;background:#17132a0a}
+  .signal b{color:#faf9ff;background:#6f4fd8}
+  .steps li,article,.warning{border-color:#17132a1a;background:#17132a06}
+  pre{background:#f2f0fa;border-color:#17132a1a}
+  .warning{border-color:#b8902a70;background:#f8e9b812}
+  article code{color:#4a3a8a}
+}
