@@ -20,6 +20,7 @@
   "homepage": "https://kubohiroya.github.io/turbowarp-extended-notification/",
   "type": "module",
   "files": [
+    "assets/",
     "dist/extended-notification.js",
     "docs/specification.md",
     "CHANGELOG.md",
