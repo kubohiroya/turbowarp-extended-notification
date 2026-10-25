@@ -19,7 +19,7 @@ importers:
         specifier: ^0.3.3
         version: 0.3.3(react@18.3.1)
       '@kubohiroya/vite-plugin-turbowarp-extension':
-        specifier: 0.6.1
+        specifier: ^0.6.1
         version: 0.6.1(vite@8.3.5(@types/node@24.13.3)(esbuild@0.28.1)(yaml@2.9.1))
       '@types/node':
         specifier: ^24.10.1

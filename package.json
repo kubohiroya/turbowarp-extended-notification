@@ -53,7 +53,7 @@
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@kubohiroya/turbowarp-extension-data-editor": "^0.3.3",
-    "@kubohiroya/vite-plugin-turbowarp-extension": "0.6.1",
+    "@kubohiroya/vite-plugin-turbowarp-extension": "^0.6.1",
     "@types/node": "^24.10.1",
     "eslint": "^10.8.0",
     "typescript": "^5.9.3",
