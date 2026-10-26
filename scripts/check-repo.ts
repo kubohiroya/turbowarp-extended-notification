@@ -78,7 +78,7 @@ function checkPolicy() {
   if (policy.licensePolicy !== 'mpl-2.0') errors.push('repo-policy.json licensePolicy must be mpl-2.0');
   if (policy.packageManager !== 'pnpm') errors.push('repo-policy.json packageManager must be pnpm');
   if (policy.homepage !== 'pages') errors.push('repo-policy.json homepage must record Pages as the user entrypoint');
-  if (policy.node?.minimum !== '22') errors.push('repo-policy.json node.minimum must be 22');
+  if (policy.node?.minimum !== '24') errors.push('repo-policy.json node.minimum must be 24');
 }
 
 function checkPackageMetadata() {
@@ -95,7 +95,7 @@ function checkPackageMetadata() {
   if (!packageMetadata.packageManager?.startsWith('pnpm@')) {
     errors.push('package.json packageManager must pin pnpm exactly');
   }
-  if (packageMetadata.engines?.node !== '>=22.18.0') errors.push('package.json engines.node must be >=22.18.0');
+  if (packageMetadata.engines?.node !== '>=24') errors.push('package.json engines.node must be >=24');
   for (const command of ['check', 'check:dist', 'prepublishOnly']) {
     if (/\bnpm run\b/u.test(packageMetadata.scripts?.[command] ?? '')) {
       errors.push(`package.json ${command} must use pnpm run`);
@@ -111,7 +111,7 @@ function checkReadme() {
     errors.push('README.md H1 must match repo-policy.json productName');
   }
   if (!readme.includes('## Block reference')) errors.push('README.md must use Block reference heading');
-  if (!readme.includes('Node.js 22') || !readme.includes('pnpm install --frozen-lockfile')) {
+  if (!readme.includes('Node.js 24') || !readme.includes('pnpm install --frozen-lockfile')) {
     errors.push('README.md must document the Node/pnpm baseline');
   }
   if (!readme.includes('SPDX-License-Identifier: MPL-2.0')) {
