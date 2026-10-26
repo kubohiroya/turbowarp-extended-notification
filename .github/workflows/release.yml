@@ -1,6 +1,7 @@
 name: Release
 
 on:
+  workflow_dispatch:
   push:
     tags:
       - 'v*'
@@ -10,6 +11,7 @@ permissions:
 
 jobs:
   release:
+    if: github.event_name == 'push'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -29,3 +31,42 @@ jobs:
           files: |
             dist/extended-notification.js
             extended-notification.zip
+
+  finalize-existing:
+    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org
+      - name: Install npm with OIDC dist-tag support
+        run: npm install --global npm@11.21.0
+      - name: Verify the published release and synchronize tags
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --input-type=module -e "import fs from 'node:fs'; const p = JSON.parse(fs.readFileSync('package.json')); if (p.name !== '@kubohiroya/turbowarp-extended-notification' || p.version !== '0.3.0') throw new Error('Main has advanced; do not restore old release tags');"
+          npm view @kubohiroya/turbowarp-extended-notification@0.3.0 version dist.shasum --json --prefer-online > published.json
+          node --input-type=module -e "import fs from 'node:fs'; const p = JSON.parse(fs.readFileSync('published.json')); if (p.version !== '0.3.0' || p['dist.shasum'] !== '01478392de2480d3f5f6e60b033846da93775e67') throw new Error('Published artifact differs');"
+          for tag in latest next; do
+            current=$(npm view @kubohiroya/turbowarp-extended-notification dist-tags.$tag --prefer-online)
+            if [ "$current" != '0.3.0' ]; then
+              npm dist-tag add @kubohiroya/turbowarp-extended-notification@0.3.0 "$tag"
+            fi
+          done
+          for attempt in {1..12}; do
+            npm view @kubohiroya/turbowarp-extended-notification dist-tags --json --prefer-online > tags.json
+            if node --input-type=module -e "import fs from 'node:fs'; const t = JSON.parse(fs.readFileSync('tags.json')); if (t.latest !== '0.3.0' || t.next !== '0.3.0') process.exit(1);"; then
+              cat tags.json
+              exit 0
+            fi
+            sleep 5
+          done
+          echo 'Release tags did not converge' >&2
+          exit 1
