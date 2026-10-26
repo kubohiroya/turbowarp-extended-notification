@@ -1,72 +1,137 @@
 name: Release
 
+# The family's standard release: a pushed v<version> tag is checked, packed, attached to the
+# GitHub Release and published to npm through trusted publishing (OIDC). No npm token is stored.
+#
+# npmjs.com side (package Settings -> Trusted publisher) must name:
+#   Organization or user  kubohiroya
+#   Repository            turbowarp-extended-notification
+#   Workflow filename     release.yml   <- the filename alone
+#   Environment           (empty)
 on:
-  workflow_dispatch:
   push:
     tags:
-      - 'v*'
+      - "v*"
 
 permissions:
   contents: write
+  id-token: write
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
 
 jobs:
   release:
-    if: github.event_name == 'push'
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v4
-      - run: corepack enable
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v6
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v6
         with:
-          node-version: 22
+          node-version-file: .nvmrc
           cache: pnpm
+        # No registry-url: it writes an .npmrc with a placeholder token, and npm sends a configured
+        # token instead of exchanging the workflow identity, so publishing fails with
+        # "OIDC permission denied".
       - run: pnpm install --frozen-lockfile
       - run: pnpm run check
+      - name: Check the tag names the package version
+        run: |
+          version="$(node -p "require('./package.json').version")"
+          if [ "${GITHUB_REF_NAME#v}" != "$version" ]; then
+            echo "::error::Tag $GITHUB_REF_NAME does not name package.json version $version."
+            exit 1
+          fi
+      - name: Pack the npm archive
+        id: pack
+        run: |
+          mkdir -p "$RUNNER_TEMP/npm"
+          npm pack --ignore-scripts --json --pack-destination "$RUNNER_TEMP/npm" > "$RUNNER_TEMP/pack.json"
+          file="$(node -p "const r = require(process.env.RUNNER_TEMP + '/pack.json'); (Array.isArray(r) ? r[0] : Object.values(r)[0]).filename")"
+          echo "file=$RUNNER_TEMP/npm/$file" >> "$GITHUB_OUTPUT"
       - name: Create ZIP archive
         run: |
           cd dist
           zip ../extended-notification.zip extended-notification.js
-      - uses: softprops/action-gh-release@v2
-        with:
-          files: |
-            dist/extended-notification.js
-            extended-notification.zip
-
-  finalize-existing:
-    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    permissions:
-      contents: read
-      id-token: write
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 24
-          registry-url: https://registry.npmjs.org
-      - name: Install npm with OIDC dist-tag support
-        run: npm install --global npm@11.21.0
-      - name: Verify the published release and synchronize tags
-        shell: bash
+      - name: Attach to the GitHub Release
+        # An attachment that already exists must be byte-identical: a release driver may have
+        # uploaded its locally verified archive first, and a differing CI build stops here,
+        # before anything reaches npm.
+        env:
+          GH_TOKEN: ${{ github.token }}
+          NPM_ARCHIVE: ${{ steps.pack.outputs.file }}
         run: |
           set -euo pipefail
-          node --input-type=module -e "import fs from 'node:fs'; const p = JSON.parse(fs.readFileSync('package.json')); if (p.name !== '@kubohiroya/turbowarp-extended-notification' || p.version !== '0.3.0') throw new Error('Main has advanced; do not restore old release tags');"
-          npm view @kubohiroya/turbowarp-extended-notification@0.3.0 version dist.shasum --json --prefer-online > published.json
-          node --input-type=module -e "import fs from 'node:fs'; const p = JSON.parse(fs.readFileSync('published.json')); if (p.version !== '0.3.0' || p['dist.shasum'] !== '01478392de2480d3f5f6e60b033846da93775e67') throw new Error('Published artifact differs');"
+          tag="$GITHUB_REF_NAME"
+          name="$(node -p "require('./package.json').name")"
+          version="$(node -p "require('./package.json').version")"
+          if ! gh release view "$tag" > /dev/null 2>&1; then
+            prerelease=()
+            case "$version" in *-*) prerelease=(--prerelease) ;; esac
+            gh release create "$tag" --verify-tag --title "$name $version" --generate-notes "${prerelease[@]}" ||
+              gh release view "$tag" > /dev/null
+          fi
+          existing="$(gh api "repos/$GITHUB_REPOSITORY/releases/tags/$tag" --jq '.assets[] | "\(.name)\t\(.digest)"')"
+          shopt -s nullglob
+          for file in "$NPM_ARCHIVE" \
+            dist/extended-notification.js \
+            extended-notification.zip; do
+            want="sha256:$(sha256sum "$file" | cut -d' ' -f1)"
+            have="$(printf '%s\n' "$existing" | awk -F'\t' -v n="$(basename "$file")" '$1 == n { print $2 }')"
+            if [ -z "$have" ]; then
+              gh release upload "$tag" "$file"
+            elif [ "$have" != "$want" ]; then
+              echo "::error::$(basename "$file") is already attached with different content."
+              exit 1
+            fi
+          done
+      - name: Use an npm that supports trusted publishing
+        run: npm install --global npm@11.21.0
+      - name: Publish to npm
+        # Last step: a failed check or mismatched tag stops the release before the registry,
+        # where a version cannot be replaced.
+        env:
+          NPM_ARCHIVE: ${{ steps.pack.outputs.file }}
+        run: |
+          set -euo pipefail
+          name="$(node -p "require('./package.json').name")"
+          version="$(node -p "require('./package.json').version")"
+          want="$(sha1sum "$NPM_ARCHIVE" | cut -d' ' -f1)"
+          have="$(npm view "$name@$version" dist.shasum --prefer-online 2> /dev/null || true)"
+          if [ -n "$have" ]; then
+            if [ "$have" != "$want" ]; then
+              echo "::error::$name@$version is already published with different content."
+              exit 1
+            fi
+            echo "$name@$version is already published with this archive."
+          else
+            dist_tag="$(node -p "require('./package.json').publishConfig?.tag ?? ''")"
+            if [ -z "$dist_tag" ]; then
+              case "$version" in *-*) dist_tag=next ;; *) dist_tag=latest ;; esac
+            fi
+            npm publish "$NPM_ARCHIVE" --access public --provenance --tag "$dist_tag"
+          fi
+          # Accepting a publish and serving it differ; wait for the registry itself.
+          for attempt in $(seq 1 60); do
+            have="$(npm view "$name@$version" dist.shasum --prefer-online 2> /dev/null || true)"
+            [ -n "$have" ] && break
+            sleep 10
+          done
+          if [ "$have" != "$want" ]; then
+            echo "::error::The registry does not serve $name@$version with the packed archive."
+            exit 1
+          fi
+      - name: Point latest and next at this release
+        # The family keeps both dist-tags on the newest verified release
+        # (kubohiroya/turbowarp-plus-packages#16).
+        run: |
+          set -euo pipefail
+          name="$(node -p "require('./package.json').name")"
+          version="$(node -p "require('./package.json').version")"
           for tag in latest next; do
-            current=$(npm view @kubohiroya/turbowarp-extended-notification dist-tags.$tag --prefer-online)
-            if [ "$current" != '0.3.0' ]; then
-              npm dist-tag add @kubohiroya/turbowarp-extended-notification@0.3.0 "$tag"
+            if [ "$(npm view "$name" "dist-tags.$tag" --prefer-online 2> /dev/null || true)" != "$version" ]; then
+              npm dist-tag add "$name@$version" "$tag"
             fi
           done
-          for attempt in {1..12}; do
-            npm view @kubohiroya/turbowarp-extended-notification dist-tags --json --prefer-online > tags.json
-            if node --input-type=module -e "import fs from 'node:fs'; const t = JSON.parse(fs.readFileSync('tags.json')); if (t.latest !== '0.3.0' || t.next !== '0.3.0') process.exit(1);"; then
-              cat tags.json
-              exit 0
-            fi
-            sleep 5
-          done
-          echo 'Release tags did not converge' >&2
-          exit 1

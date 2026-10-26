@@ -93,6 +93,7 @@ The timeout-enabled Boolean blocks return `true` when the notification or key pr
 ## Development
 
 ```bash
+npm install --global corepack@latest
 corepack enable
 pnpm install --frozen-lockfile
 pnpm run check
@@ -122,7 +123,7 @@ The GitHub Pages workflow publishes `docs/` after documentation changes reach
 `main`. Maintainers should follow [RELEASING.md](RELEASING.md) when publishing a
 new npm version and matching GitHub Release.
 
-This repository uses Node.js 22 or later and pnpm through Corepack. The package `homepage` points
+This repository uses Node.js 24 or later and pnpm through Corepack. The package `homepage` points
 to the Pages user guide because that is the end-user entrypoint; GitHub remains the source and issue
 tracker through `repository` and `bugs` metadata.
 

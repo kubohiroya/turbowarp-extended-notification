@@ -52,6 +52,7 @@ node_modules/@kubohiroya/turbowarp-extended-notification/dist/extended-notificat
 ## 開発
 
 ```bash
+npm install --global corepack@latest
 corepack enable
 pnpm install --frozen-lockfile
 pnpm run check
@@ -80,7 +81,7 @@ dist/extended-notification.js
 ドキュメントの変更が`main`へ入ると、GitHub Pagesのworkflowが`docs/`を公開します。新しいnpm versionと
 対応するGitHub Releaseを公開する際は、[RELEASING.md](RELEASING.md)に従ってください。
 
-このリポジトリはNode.js 22以降と、Corepack経由のpnpmを使います。package の`homepage`はPagesの
+このリポジトリはNode.js 24以降と、Corepack経由のpnpmを使います。package の`homepage`はPagesの
 ユーザーガイドを指します。利用者の入口がそこであるためで、GitHubは`repository`と`bugs` metadataを通じて
 sourceとissue trackerであり続けます。
 
