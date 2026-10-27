@@ -1,0 +1,21 @@
+{
+  "baseURL": "https://kubohiroya.github.io/turbowarp-extended-notification/",
+  "extension": {
+    "id": "kubohiroyaextendednotification",
+    "bundle": "dist/extended-notification.js",
+    "unsandboxed": true
+  },
+  "samples": [
+    {
+      "name": "wait-for-notification",
+      "title": "Extended Notification minimal demo",
+      "checks": [
+        {
+          "variable": "received",
+          "equals": true
+        }
+      ],
+      "instructions": "A second script sends sample-ready; the waiting block returns true."
+    }
+  ]
+}

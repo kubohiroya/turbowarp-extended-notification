@@ -8,6 +8,15 @@
 
 **ユーザーガイド:** [English](https://kubohiroya.github.io/turbowarp-extended-notification/) · [日本語](https://kubohiroya.github.io/turbowarp-extended-notification/ja/)
 
+## 実行できるサンプル
+
+[**TurboWarp Editorでデモを開く**](https://turbowarp.org/editor?project_url=https%3A%2F%2Fkubohiroya.github.io%2Fturbowarp-extended-notification%2Fsamples%2Fwait-for-notification.sb3) · [SB3をダウンロード](https://kubohiroya.github.io/turbowarp-extended-notification/samples/wait-for-notification.sb3)
+
+**Run without sandbox**を選んで**Allow**し、緑の旗を押します。
+並行スクリプトで待ち受けを開始してから`sendNotification`し、受信結果を表示。サンプルの元データと期待結果は[`samples/README.md`](samples/README.md)に記載しています。
+
+`pnpm run samples:build`でSB3を再生成し、`pnpm run samples:check`で更新漏れと生成処理を確認します。
+
 ## 目的
 
 TurboWarpのプロジェクトに、小さく再利用できる同期の仕組みを提供します。姿勢認識、音声認識、スプライトの
