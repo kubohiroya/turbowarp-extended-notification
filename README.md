@@ -8,6 +8,16 @@ A TurboWarp extension for waiting on custom notifications or key presses with op
 
 **User guide:** [English](https://kubohiroya.github.io/turbowarp-extended-notification/) · [日本語](https://kubohiroya.github.io/turbowarp-extended-notification/ja/)
 
+## Runnable sample
+
+[**Open the demo in TurboWarp Editor**](https://turbowarp.org/editor?project_url=https%3A%2F%2Fkubohiroya.github.io%2Fturbowarp-extended-notification%2Fsamples%2Fwait-for-notification.sb3) · [Download the SB3](https://kubohiroya.github.io/turbowarp-extended-notification/samples/wait-for-notification.sb3)
+
+Select **Run without sandbox**, then **Allow**, and click the green flag.
+A second script sends sample-ready; the waiting block returns true.
+
+Editable sources and expected results: [`samples/README.md`](samples/README.md).
+Run `pnpm run samples:build` after source/bundle changes and `pnpm run samples:check` before committing.
+
 ## Purpose
 
 The extension provides a small, reusable synchronization mechanism for TurboWarp projects. Input-specific logic such as pose recognition, speech recognition, or sprite click detection remains in controller sprites, which emit named extended notifications.

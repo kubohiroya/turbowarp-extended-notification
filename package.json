@@ -47,9 +47,12 @@
     "docs:check": "node scripts/generate-readme.ts --check",
     "repo:check": "node scripts/check-repo.ts",
     "pack:check": "npm pack --dry-run --ignore-scripts",
-    "check": "pnpm run audit && pnpm run typecheck && pnpm run lint && pnpm run test && pnpm run build && pnpm run docs:check && pnpm run check:dist && pnpm run repo:check && pnpm run pack:check",
+    "check": "pnpm run audit && pnpm run typecheck && pnpm run lint && pnpm run test && pnpm run build && pnpm run docs:check && pnpm run check:dist && pnpm run repo:check && pnpm run pack:check && pnpm run samples:check",
     "check:dist": "pnpm run build && git diff --exit-code -- dist",
-    "prepublishOnly": "pnpm run check"
+    "prepublishOnly": "pnpm run check",
+    "samples:build": "node scripts/build-samples.mjs",
+    "samples:check": "node scripts/build-samples.mjs --check && node --test scripts/verify-samples.mjs",
+    "pages:build": "node scripts/prepare-pages.mjs"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
