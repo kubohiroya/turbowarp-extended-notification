@@ -21,7 +21,7 @@ The built JavaScript file is committed to this repository so that users do not n
 Alternatively, install the npm package:
 
 ```bash
-npm install --save-exact @kubohiroya/turbowarp-extended-notification@0.3.0
+npm install --save-exact @kubohiroya/turbowarp-extended-notification@0.4.0
 ```
 
 The extension bundle is then available at:

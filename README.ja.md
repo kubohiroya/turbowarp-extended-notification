@@ -25,7 +25,7 @@ TurboWarpのプロジェクトに、小さく再利用できる同期の仕組�
 npm packageからも導入できます。
 
 ```bash
-npm install --save-exact @kubohiroya/turbowarp-extended-notification@0.3.0
+npm install --save-exact @kubohiroya/turbowarp-extended-notification@0.4.0
 ```
 
 拡張機能のbundleは次の場所にあります。
