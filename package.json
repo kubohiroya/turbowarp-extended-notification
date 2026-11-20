@@ -1,6 +1,6 @@
 {
   "name": "@kubohiroya/turbowarp-extended-notification",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "description": "A TurboWarp extension for waiting on custom notifications or key presses with optional timeouts.",
   "keywords": [
     "turbowarp",
@@ -74,5 +74,11 @@
     "revision": "e37b18e218e37c84cc23b15ab0e32427b81abfdc",
     "revisionRole": "base-commit",
     "sourceState": "local-release-overlay"
+  },
+  "turbowarpExtension": {
+    "resourceDeclaration": {
+      "schemaVersion": 1,
+      "resources": []
+    }
   }
 }
